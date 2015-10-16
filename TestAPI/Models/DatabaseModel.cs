@@ -4,7 +4,6 @@ namespace TestAPI.Models
     using System.Data.Entity;
     using System.Linq;
 
-    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class DatabaseModel : DbContext
     {
         // Your context has been configured to use a 'Model1' connection string from your application's 

@@ -31,12 +31,14 @@ namespace TestAPI.Controllers
             return new UserRespose
             {
                 //See comment in UserResponse
-                User = new
-                {
-                    Username = user?.Username,
-                    name = user?.Name,
-                    UserId = user?.UserId,
-                },
+                User =
+                    user == null ? null :
+                        new
+                        {
+                            Username = user.Username,
+                            name = user.Name,
+                            UserId = user.UserId
+                        },
                 Error = error
             };
         }
@@ -73,7 +75,7 @@ namespace TestAPI.Controllers
 
 
         // GET: api/Users/5
-        public UserRespose Get([FromUri] string token, [FromUri] int userId)
+        public UserRespose Get([FromUri] string token, [FromUri] int id)
         {
             if (Utils.CheckToken(token))
             {
@@ -82,7 +84,7 @@ namespace TestAPI.Controllers
 
             using (DatabaseModel model = new DatabaseModel())
             {
-                return _Package(null, model.Users.SingleOrDefault(x => x.UserId == userId));
+                return _Package(null, model.Users.SingleOrDefault(x => x.UserId == id));
             }
         }
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using TestAPI.Code;
 using TestAPI.Models;
@@ -30,13 +29,15 @@ namespace TestAPI.Controllers
             return new JourneyRespose
             {
                 //See comment in UserResponse
-                Journey = new
-                {
-                    Name = journey?.Name,
-                    CreatedDate = journey?.CreatedDate,
-                    UserId = journey?.UserId,
-                    JourneyId = journey?.JourneyId
-                },
+                Journey =
+                    journey == null ? null :
+                        new
+                        {
+                            Name = journey.Name,
+                            CreatedDate = journey.CreatedDate,
+                            UserId = journey.UserId,
+                            JourneyId = journey.JourneyId
+                        },
                 Error = error
             };
         }
@@ -73,7 +74,8 @@ namespace TestAPI.Controllers
         }
 
         // GET: api/Journeys/5
-        public JourneyRespose Get([FromUri] string token, [FromUri] int journeyId)
+        [System.Web.Http.HttpGet]
+        public JourneyRespose Get([FromUri] string token, [FromUri] int id)
         {
             if (Utils.CheckToken(token))
             {
@@ -82,7 +84,7 @@ namespace TestAPI.Controllers
 
             using (DatabaseModel model = new DatabaseModel())
             {
-                return _Package(null, model.Journeys.SingleOrDefault(x => x.UserId == journeyId));
+                return _Package(null, model.Journeys.SingleOrDefault(x => x.JourneyId == id));
             }
         }
 
